@@ -1,11 +1,11 @@
 URL Shortener
 ================
 
+##### Version: Url Shortener BETA 0.1
+
 # Overview
 
 A Flask RESTful web application for creating and tracking shortened URL's.
-
-##### version: Url Shortener BETA 0.1
 
 # Requirements
 
@@ -23,6 +23,20 @@ Required PIP packages, also in the requirements.txt
 - Flask-Actions==0.6.6
 - requests==2.5.0
 
+# Installation
+
+```bash
+apt-get update && apt-get install python-dev build-essential python-setuptools python-virtualenv
+```
+
+```bash
+git clone -b part-1 https://github.com/configuresystems/url-shortener.git application
+cd application
+virtualenv flask
+source flask/bin/activate
+python run.py runserver -h [HOSTNAME] -p [PORT]
+```
+
 # Usage
 
 |  HTTP Method | Response|  URI |  Action |
@@ -39,17 +53,3 @@ Publically exposed data fields:
 - **tni_url:** Our key for the target URL
 - **actual_url:** Target URL to redirect to
 - **created:** Date shortened URL was created
-
-# Installation
-
-```bash
-apt-get update && apt-get install python-dev build-essential python-setuptools python-virtualenv
-```
-
-```bash
-git clone -b part-1 git@github.com:configuresystems/url-shortener.git application
-cd application
-virtualenv flask
-source flask/bin/activate
-python run.py runserver -h [HOSTNAME] -p [PORT]
-```
