@@ -1,0 +1,4 @@
+Flask==0.10.1
+Flask-Actions==0.6.6
+Flask-RESTful==0.3.0
+requests==2.5.0
