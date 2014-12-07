@@ -25,10 +25,11 @@ Required PIP packages, also in the requirements.txt
 
 # Usage
 
-|  HTTP Method  |  URI |  Action |
-| :-----------: | :--- | :------ |
-| GET | http://[hostname]/api/v1.0/tni | Retrieve a list of shortened URLs |
-| GET | http://[hostname]/api/v1.0/tni/[tni_url] | Retrieve single shortened URL |
+|  HTTP Method | Response|  URI |  Action |
+| :-----------:|:--:| :--- | :------ |
+| GET | JSON | http://[hostname]/api/v1.0/tni | Retrieve a list of shortened URLs |
+| GET | JSON | http://[hostname]/api/v1.0/tni/[tni_url] | Retrieve single shortened URL |
+| GET | HTML | http://[hostname]/[tni_url] | URL Redirect|
 
 Publically exposed data fields:
 
@@ -48,24 +49,7 @@ apt-get update && apt-get install python-dev build-essential python-setuptools p
 ```bash
 git clone -b part-1 git@github.com:configuresystems/url-shortener.git application
 cd application
-virtualenv flast
-source venv/bin/activate
-# due to weird pip limitations, we have to install ez_setup separately
+virtualenv flask
+source flask/bin/activate
 python run.py runserver -h [HOSTNAME] -p [PORT]
 ```
-
-Get all requests
-
-```bash
-curl -i http://[hostname]/api/v1.0/tni
-```
-
-Get single request by tni_url
-
-```bash
-curl -i http://[hostname]/api/v1.0/tni/[tni_url]
-```
-
-Test Redirection
-
-http://[hostname]/tni/[tni_url]
