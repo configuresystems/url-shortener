@@ -4,15 +4,35 @@ _cwd = dirname(abspath(__file__))
 
 class BaseConfiguration(object):
     """
-    Setting up some constant variables
+    Declaring our default configuration values,
+    this is our base object for configuration
     """
     DEBUG = False
     TESTING = False
-    HOST = 'tni.link'
-    PORT = "5000"
+    CSRF_ENABLED = True
+    SECRET_KEY = 'phee-F1#ph0$fum'
+
+    """
+    Set desired hostname or IP address to allow
+    us access to the application
+    """
+    WEB_HOST = 'tni.link'
+    WEB_PORT = "5000"
+    API_HOST = 'tni.link'
+    API_PORT = "5000"
 
 class DebugConfiguration(BaseConfiguration):
     """
-    This object inherits the BaseConfiguration object
+    Tailored configuration for debugging
     """
     DEBUG = True
+
+class TestConfiguration(BaseConfiguration):
+    """
+    Tailored configuration for our running our
+    tests
+    """
+    DEBUG = False
+    TESTING = True
+    WTF_CSRF_ENABLED = False
+

@@ -1,6 +1,7 @@
 from app import app
-from flask import abort, redirect
+from flask import abort, redirect, render_template
 from flask.ext.restful import Resource, reqparse, fields, marshal
+from .controller import APIMixins
 import datetime
 
 
@@ -63,7 +64,19 @@ class TniUrlListAPI(Resource):
         """
         Add new object
         """
-        pass
+        api_mixins = APIMixins()
+        args = self.reqparse.parse_args()
+        if not args['tni_url']:
+            args['tni_url'] = api_mixins.generateTniUrl()
+
+        data = {
+                'id': tni_data[-1]['id'] + 1,
+                'tni_url': args['tni_url'],
+                'actual_url': args['actual_url'],
+                'created': api_mixins.getDateTime()
+                }
+        tni_data.append(data)
+        return { 'tni': marshal(data, tni_fields) }, 201
 
 class TniUrlAPI(Resource):
     """
@@ -101,25 +114,47 @@ class TniUrlAPI(Resource):
         """
         Update specific values of an object
         """
-        pass
+        tni = filter(lambda t: t['tni_url'] == tni_url, tni_data)
+        if len(task) == 0:
+            abort(404)
+        tni = tni[0]
+        args = self.reqparse.parse_args()
+        for k, v in args.iteritems():
+            if v != None:
+                tni[k] = v
+        return { 'tni': marshal(tni, tni_fields)}
 
     def delete(self, tni_url):
         """
         delete object
         """
-        pass
+        tni = filter(lambda t: t['tni_url'] == tni_url, tni_data)
+        if len(tni) == 0:
+            abort(404)
+        tni_data.remove(tni[0])
+        return { 'result': True }
 
-from .controller import APIMixins
+
 class TniUrlWEB():
     """
     tni.link web views
     """
     @app.route('/<tni_url>', methods=['GET'])
-    def tni_route(tni_url):
+    def tni_single(tni_url):
         """
         redirects the short link to the actual link
         """
-        from app.tni.controller import APIMixins
         api_mixins = APIMixins(tni_url=tni_url)
         url = api_mixins.getField(field='actual_url')
         return redirect(url, code=302)
+
+    @app.route('/', methods=['GET'])
+    @app.route('/urls', methods=['GET'])
+    def tni_list():
+        """
+        redirects the short link to the actual link
+        """
+        api_mixins = APIMixins()
+        data = api_mixins.getData()
+        print data
+        return render_template('base.html', data=data)
